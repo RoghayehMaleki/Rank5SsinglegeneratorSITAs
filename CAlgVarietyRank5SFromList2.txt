@@ -1,0 +1,733 @@
+CAlgRank5SFromList2:=function(L)
+local B0,B1,B2,B3,B4,T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T;
+
+B0:=IdentityMat(5);
+
+B1:=[[0,L[11],0,0,0],
+    [1, L[11]-1-(L[1]*L[12]+L[2]*L[13]+L[3]*L[14])/L[11], L[1]*L[12]/L[11], L[2]*L[13]/L[11], L[3]*L[14]/L[11]],
+    [0, L[1], L[11]-L[1]-(L[4]*L[13]+L[5]*L[14])/L[12], L[4]*L[13]/L[12], L[5]*L[14]/L[12]],
+    [0, L[2], L[4], L[11]-L[2]-L[4]-L[6]*L[14]/L[13], L[6]*L[14]/L[13]],
+    [0, L[3], L[5], L[6], L[11]-L[3]-L[5]-L[6] ]];
+
+B2:=[[0,0,L[12],0,0],
+     [0, B1[2][3], B1[3][3]*L[12]/L[11], B1[4][3]*L[13]/L[11], B1[5][3]*L[14]/L[11] ],
+     [1, B1[3][3], L[12]-1-B1[3][3]-(L[7]*L[13]+L[8]*L[14])/L[12], L[7]*L[13]/L[12], L[8]*L[14]/L[12] ], 
+     [0, B1[4][3], L[7], L[12]-B1[4][3]-L[7]-L[9]*L[14]/L[13], L[9]*L[14]/L[13] ],
+     [0, B1[5][3], L[8], L[9], L[12]-B1[5][3]-L[8]-L[9] ] ];
+
+B3:=[[0,0,0,L[13],0],
+     [0, B1[2][4], B2[2][4], B1[4][4]*L[13]/L[11], B1[5][4]*L[14]/L[11] ], 
+     [0, B1[3][4], B2[3][4], B2[4][4]*L[13]/L[12], B2[5][4]*L[14]/L[12] ], 
+     [1, B1[4][4], B2[4][4], L[13]-1-B1[4][4]-B2[4][4]-L[10]*L[14]/L[13], L[10]*L[14]/L[13] ], 
+     [0, B1[5][4], B2[5][4], L[10], L[13]-L[10]-B1[5][4]-B2[5][4] ] ];
+
+B4:=[[0,0,0,0,L[14]],
+     [0, B1[2][5], B2[2][5], B3[2][5], B1[5][5]*L[14]/L[11] ], 
+     [0, B1[3][5], B2[3][5], B3[3][5], B2[5][5]*L[14]/L[12] ], 
+     [0, B1[4][5], B2[4][5], B3[4][5], B3[5][5]*L[14]/L[13] ], 
+     [1, B1[5][5], B2[5][5], B3[5][5], L[14]-1-B1[5][5]-B2[5][5]-B3[5][5] ] ];
+
+T1:=B1^2-(L[11]*B0+B1[2][2]*B1+B1[3][2]*B2+B1[4][2]*B3+B1[5][2]*B4);
+T1:=Concatenation(T1);
+
+T2:=B1*B2-(B1[2][3]*B1+B1[3][3]*B2+B1[4][3]*B3+B1[5][3]*B4);
+T2:=Concatenation(T2);
+T0:=Concatenation(T1,T2);
+
+T3:=B1*B3-(B1[2][4]*B1+B1[3][4]*B2+B1[4][4]*B3+B1[5][4]*B4);
+T3:=Concatenation(T3);
+T0:=Concatenation(T0,T3);
+
+T4:=B1*B4-(B1[2][5]*B1+B1[3][5]*B2+B1[4][5]*B3+B1[5][5]*B4);
+T4:=Concatenation(T4);
+T0:=Concatenation(T0,T4);
+
+T8:=B2*B1-(B1[2][3]*B1+B1[3][3]*B2+B1[4][3]*B3+B1[5][3]*B4);  
+T8:=Concatenation(T8);
+T0:=Concatenation(T0,T8);
+
+T5:=B2^2-(L[12]*B0+B2[2][3]*B1+B2[3][3]*B2+B2[4][3]*B3+B2[5][3]*B4);
+T5:=Concatenation(T5);
+T0:=Concatenation(T0,T5);
+
+T6:=B2*B3-(B2[2][4]*B1+B2[3][4]*B2+B2[4][4]*B3+B2[5][4]*B4); 
+T6:=Concatenation(T6);
+T0:=Concatenation(T0,T6);
+
+T7:=B2*B4-(B2[2][5]*B1+B2[3][5]*B2+B2[4][5]*B3+B2[5][5]*B4); 
+T7:=Concatenation(T7);
+T0:=Concatenation(T0,T7);
+
+T11:=B3*B1-(B1[2][4]*B1+B1[3][4]*B2+B1[4][4]*B3+B1[5][4]*B4);
+T11:=Concatenation(T11);
+T0:=Concatenation(T0,T11);
+
+T12:=B3*B2-(B2[2][4]*B1+B2[3][4]*B2+B2[4][4]*B3+B2[5][4]*B4); 
+T12:=Concatenation(T12);
+T0:=Concatenation(T0,T12);
+
+T9:=B3^2-(L[13]*B0+B3[2][4]*B1+B3[3][4]*B2+B3[4][4]*B3+B3[5][4]*B4); 
+T9:=Concatenation(T9);
+T0:=Concatenation(T0,T9);
+
+T10:=B3*B4-(B3[2][5]*B1+B3[3][5]*B2+B3[4][5]*B3+B3[5][5]*B4); 
+T10:=Concatenation(T10);
+T0:=Concatenation(T0,T10);
+
+T14:=B4*B1-(B1[2][5]*B1+B1[3][5]*B2+B1[4][5]*B3+B1[5][5]*B4);
+T14:=Concatenation(T14);
+T0:=Concatenation(T0,T14);
+
+T15:=B4*B2-(B2[2][5]*B1+B2[3][5]*B2+B2[4][5]*B3+B2[5][5]*B4);
+T15:=Concatenation(T15);
+T0:=Concatenation(T0,T15);
+
+T16:=B4*B3-(B3[2][5]*B1+B3[3][5]*B2+B3[4][5]*B3+B3[5][5]*B4);
+T16:=Concatenation(T16);
+T0:=Concatenation(T0,T16);
+
+T13:=B4^2-(L[14]*B0+B4[2][5]*B1+B4[3][5]*B2+B4[4][5]*B3+B4[5][5]*B4); 
+T13:=Concatenation(T13);
+T0:=Concatenation(T0,T13);
+
+#Add(T0,TraceMat(x[1]^0*B1)-(L[25]-x[1]^0));
+#Add(T0,TraceMat(x[1]^0*B2)-(L[26]-x[1]^0));
+#Add(T0,TraceMat(x[1]^0*B3)-(L[27]-x[1]^0));
+#Add(T0,TraceMat(x[1]^0*B4)-(L[28]-x[1]^0));
+
+#T:=AsSet(T0); 
+
+return T0; 
+end; 
+################################################################
+# The polynomial substitution version
+# Create variables x_1 through x_25 first
+# then do this command on the list x
+# Do this command before IntTableAlg command
+#######################################################
+CAlgVarietyRank5S:=function(L)
+local B0,B1,B2,B3,B4,T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22,T23,T,V0,V1,U,t,v;
+
+B0:=IdentityMat(5);
+
+B1:=[[0,L[25],0,0,0],
+    [1,L[25]-L[1]-L[5]-L[9]-1,L[1],L[5],L[9]],
+    [0,L[25]-L[2]-L[6]-L[10], L[2],L[6],L[10]],
+    [0,L[25]-L[3]-L[7]-L[11], L[3],L[7],L[11]],
+    [0,L[25]-L[4]-L[8]-L[12], L[4],L[8],L[12]]];
+
+B2:=[[0,0,L[26],0,0],
+     [0,L[1],L[26]-L[1]-L[13]-L[17],L[13],L[17]],
+     [1,L[2],L[26]-L[2]-L[14]-L[18]-1,L[14],L[18]],
+     [0,L[3],L[26]-L[3]-L[15]-L[19],L[15],L[19]],
+     [0,L[4],L[26]-L[4]-L[16]-L[20],L[16],L[20]]];
+
+B3:=[[0,0,0,L[27],0],
+     [0,L[5],L[13],L[27]-L[5]-L[13]-L[21],L[21]],
+     [0,L[6],L[14],L[27]-L[6]-L[14]-L[22],L[22]],
+     [1,L[7],L[15],L[27]-L[7]-L[15]-L[23]-1,L[23]],
+     [0,L[8],L[16],L[27]-L[8]-L[16]-L[24],L[24]]];
+
+B4:=[[0,0,0,0,L[28]],
+     [0,L[9],L[17],L[21],L[28]-L[9]-L[17]-L[21]],
+     [0,L[10],L[18],L[22],L[28]-L[10]-L[18]-L[22]],
+     [0,L[11],L[19],L[23],L[28]-L[11]-L[19]-L[23]],
+     [1,L[12],L[20],L[24],L[28]-L[12]-L[20]-L[24]-1]];
+
+T1:=B1^2-(L[25]*B0+(L[25]-L[1]-L[5]-L[9]-1)*B1+(L[25]-L[2]-L[6]-L[10])*B2+(L[25]-L[3]-L[7]-L[11])*B3+(L[25]-L[4]-L[8]-L[12])*B4);
+T1:=Concatenation(T1);
+
+T2:=B1*B2-(L[1]*B1+L[2]*B2+L[3]*B3+L[4]*B4);
+T2:=Concatenation(T2);
+T0:=Concatenation(T1,T2);
+
+T3:=B1*B3-(L[5]*B1+L[6]*B2+L[7]*B3+L[8]*B4);
+T3:=Concatenation(T3);
+T0:=Concatenation(T0,T3);
+
+T4:=B1*B4-(L[9]*B1+L[10]*B2+L[11]*B3+L[12]*B4);
+T4:=Concatenation(T4);
+T0:=Concatenation(T0,T4);
+
+T5:=B2^2-(L[26]*B0+(L[26]-L[1]-L[13]-L[17])*B1+(L[26]-L[2]-L[14]-L[18]-1)*B2+(L[26]-L[3]-L[15]-L[19])*B3+(L[26]-L[4]-L[16]-L[20])*B4);
+T5:=Concatenation(T5);
+T0:=Concatenation(T0,T5);
+
+T6:=B2*B3-(L[13]*B1+L[14]*B2+L[15]*B3+L[16]*B4); 
+T6:=Concatenation(T6);
+T0:=Concatenation(T0,T6);
+
+T7:=B2*B4-(L[17]*B1+L[18]*B2+L[19]*B3+L[20]*B4); 
+T7:=Concatenation(T7);
+T0:=Concatenation(T0,T7);
+
+T8:=B2*B1-B1*B2; 
+T8:=Concatenation(T8);
+T0:=Concatenation(T0,T8);
+
+T9:=B3^2-(L[27]*B0+(L[27]-L[5]-L[13]-L[21])*B1+(L[27]-L[6]-L[14]-L[22])*B2+(L[27]-L[7]-L[15]-L[23]-1)*B3+(L[27]-L[8]-L[16]-L[24])*B4); 
+T9:=Concatenation(T9);
+T0:=Concatenation(T0,T9);
+
+T10:=B3*B4-(L[21]*B1+L[22]*B2+L[23]*B3+L[24]*B4); 
+T10:=Concatenation(T10);
+T0:=Concatenation(T0,T10);
+
+T11:=B3*B1-B1*B3;
+T11:=Concatenation(T11);
+T0:=Concatenation(T0,T11);
+
+T12:=B3*B2-B2*B3;
+T12:=Concatenation(T12);
+T0:=Concatenation(T0,T12);
+
+T13:=B4^2-(L[28]*B0+(L[28]-L[9]-L[17]-L[21])*B1+(L[28]-L[10]-L[18]-L[22])*B2+(L[28]-L[11]-L[19]-L[23])*B3+(L[28]-L[12]-L[20]-L[24]-1)*B4); 
+T13:=Concatenation(T13);
+T0:=Concatenation(T0,T13);
+
+T14:=B4*B1-B1*B4;
+T14:=Concatenation(T14);
+T0:=Concatenation(T0,T14);
+
+T15:=B4*B2-B2*B4;
+T15:=Concatenation(T15);
+T0:=Concatenation(T0,T15);
+
+T16:=B4*B3-B3*B4;
+T16:=Concatenation(T16);
+T0:=Concatenation(T0,T16);
+
+T17:=(B1+B3)^2-32*B0-32*(B2+B4); 
+T17:=Concatenation(T17);
+T0:=Concatenation(T0,T17);
+
+T18:=(B1+B3)*B2-28*(B1+B3); 
+T18:=Concatenation(T18);
+T0:=Concatenation(T0,T18);
+
+T20:=(B1+B3)*B4-3*(B1+B3); 
+T20:=Concatenation(T20);
+T0:=Concatenation(T0,T20);
+
+T21:=B2^2-28*B0-24*B2-28*B4; 
+T21:=Concatenation(T21);
+T0:=Concatenation(T0,T21);
+
+T22:=B2*B4-3*B2; 
+T22:=Concatenation(T22);
+T0:=Concatenation(T0,T22);
+
+T23:=B4^2-3*B0-2*B4;  
+T23:=Concatenation(T23);
+T0:=Concatenation(T0,T23);
+
+
+
+T:=AsSet(T0); 
+
+V0:=[]; for t in T0 do if not(t=0*t) then Add(V0,t); fi; od; 
+V1:=[V0[1]]; for v in V0 do U:=VectorSpace(Rationals,V1); if not(v in U) then Add(V1,v); fi; od; 
+V1:=SortedList(V1);
+
+return V1; 
+end; 
+
+###################
+EnumerationFromListRank5S:=function(n) 
+local L,k,k1,k2,k3,k4,i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12,i13,i14,i15,i16,i17,i18,i19,i20,i21,i22,i23,i24,S,T,t,V,j; 
+
+L:=[];
+S:=[];
+for k1 in [1..(n-4)] do 
+for k2 in [1..(n-k1-3)] do 
+if not(k2>k1) then 
+for k3 in [1..(n-k1-k2-2)] do 
+if not(k3>k1) and not(k3>k2) then 
+k4:=n-1-k1-k2-k3; 
+if not(k4>k1) and not(k4>k2) and not(k4>k3) then 
+
+for i3 in [0..k2] do 
+  i6:=(1/k2)*(i3*k3); if IsInt(i6) and not(i6 < 0) then 
+  i13:=(1/k1)*(i3*k3); if IsInt(i13) and not(i13 < 0) then 
+for i4 in [0..k2] do 
+  i10:=(1/k2)*(i4*k4); if IsInt(i10) and not(i10 < 0) then 
+  i17:=(1/k1)*(i4*k4); if IsInt(i17) and not(i17 < 0) then 
+for i8 in [0..k3] do 
+  i11:=(1/k3)*(i8*k4); if IsInt(i11) and not(i11 < 0) then 
+  i21:=(1/k1)*(i8*k4); if IsInt(i21) and not(i21 < 0) then 
+for i16 in [0..k3] do 
+  i19:=(1/k3)*(i16*k4); if IsInt(i19) and not(i19 < 0) then 
+  i22:=(1/k2)*(i16*k4); if IsInt(i22) and not(i22 < 0) then 
+for i1 in [0..k2] do
+  i2:=(1/k2)*(k1*k2-i1*k1-i13*k1-i17*k1); 
+    if IsInt(i2) and not(i2 < 0) then 
+for i5 in [0..k3] do 
+  i7:=(1/k3)*(k1*k3-i5*k1-i13*k1-i21*k1); 
+    if IsInt(i7) and not(i7 < 0) then 
+for i9 in [0..k4] do 
+  i12:=(1/k4)*(k1*k4-i9*k1-i17*k1-i21*k1); 
+    if IsInt(i12) and not(i12 < 0) then 
+for i14 in [0..k3] do 
+  i15:=(1/k3)*(k2*k3-i6*k2-i14*k2-i22*k2);
+    if IsInt(i15) and not(i15 < 0) then 
+for i18 in [0..k4] do 
+  i20:=(1/k4)*(k2*k4-i10*k2-i18*k2-i22*k2);
+    if IsInt(i20) and not(i20 < 0) then 
+for i23 in [0..k4] do
+  i24:=(1/k4)*(k3*k4-i11*k3-i19*k3-i23*k3);
+    if IsInt(i24) and not(i24 < 0) then 
+
+  T:=[i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12,i13,i14, i15,i16,i17,i18,i19,i20,i21,i22,i23,i24,k1,k2,k3,k4]; 
+  t:=CAlgRank5SFromList2(T); 
+  if Size(t)=1 then 
+    Add(L,T); 
+  fi; 
+
+  fi; 
+od;
+  fi; 
+od; 
+  fi;
+od; 
+  fi; 
+od; 
+  fi;
+od; 
+  fi;
+od; 
+
+  fi;
+  fi;
+od; 
+  fi;
+  fi;
+od; 
+  fi;
+  fi;
+od;
+  fi; 
+  fi;  
+od; 
+
+fi; 
+fi; 
+od; 
+fi; 
+od; 
+od; 
+
+# for T in S do 
+#  t:=CAlgRank5SFromList(T); 
+#  if Size(t)=1 then 
+#    Add(L,T); 
+#  fi; 
+#  od; 
+
+return L; 
+end; 
+##############################################
+# designed for use with CAlgVariety
+##############################################
+EnumerationCAlgVarietyRank5S:=function(n,V1,x) 
+local L,k,k1,k2,k3,k4,i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12,i13,i14,i15,i16,i17,i18,i19,i20,i21,i22,i23,i24,S,T,t,u,v,V,j; 
+
+L:=[];
+S:=[];
+for k1 in [1..(n-4)] do 
+for k2 in [1..(n-k1-3)] do 
+if not(k2>k1) then 
+for k3 in [1..(n-k1-k2-2)] do 
+if not(k3>k1) and not(k3>k2) then 
+k4:=n-1-k1-k2-k3; 
+if not(k4>k1) and not(k4>k2) and not(k4>k3) then 
+
+for i3 in [0..k2] do 
+  i6:=(1/k3)*(i3*k3); if IsInt(i6) and not(i6 < 0) then 
+  i13:=(1/k1)*(i3*k3); if IsInt(i13) and not(i13 < 0) then 
+for i4 in [0..k2] do 
+  i10:=(1/k2)*(i4*k4); if IsInt(i10) and not(i10 < 0) then 
+  i17:=(1/k1)*(i4*k4); if IsInt(i17) and not(i17 < 0) then 
+for i8 in [0..k3] do 
+  i11:=(1/k3)*(i8*k4); if IsInt(i11) and not(i11 < 0) then 
+  i21:=(1/k1)*(i8*k4); if IsInt(i21) and not(i21 < 0) then 
+for i16 in [0..k3] do 
+  i19:=(1/k3)*(i16*k4); if IsInt(i19) and not(i19 < 0) then 
+  i22:=(1/k2)*(i16*k4); if IsInt(i22) and not(i22 < 0) then 
+for i1 in [0..k2] do
+  i2:=(1/k2)*(k1*k2-i1*k1-i13*k1-i17*k2); 
+    if IsInt(i2) and not(i2 < 0) then 
+for i5 in [0..k3] do 
+  i7:=(1/k3)*(k1*k3-i5*k1-i13*k1-i21*k1); 
+    if IsInt(i7) and not(i7 < 0) then 
+for i9 in [0..k4] do 
+  i12:=(1/k4)*(k1*k4-i9*k1-i17*k1-i21*k1); 
+    if IsInt(i12) and not(i12 < 0) then 
+for i14 in [0..k3] do 
+  i15:=(1/k3)*(k2*k3-i6*k2-i14*k2-i22*k2);
+    if IsInt(i15) and not(i12 < 0) then 
+for i18 in [0..k4] do 
+  i20:=(1/k4)*(k2*k4-i10*k2-i18*k2-i22*k2);
+    if IsInt(i20) and not(i20 < 0) then 
+for i23 in [0..k4] do
+  i24:=(1/k4)*(k3*k4-i11*k3-i19*k3-i23*k3);
+    if IsInt(i24) and not(i24 < 0) then 
+
+  T:=[i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12,i13,i14, i15,i16,i17,i18,i19,i20,i21,i22,i23,i24,k1,k2,k3,k4]; 
+  t:=0; 
+  for v in V1 do 
+   u:=Value(v,x,T); 
+   if not(u=0) then 
+     t:=1; 
+   fi; 
+  od; 
+  if t=0 then 
+    Add(L,T); 
+  fi; 
+
+  fi; 
+od;
+  fi; 
+od; 
+  fi;
+od; 
+  fi; 
+od; 
+  fi;
+od; 
+  fi;
+od; 
+
+  fi;
+  fi;
+od; 
+  fi;
+  fi;
+od; 
+  fi;
+  fi;
+od;
+  fi; 
+  fi;  
+od; 
+
+fi; 
+fi; 
+od; 
+fi; 
+od; 
+od; 
+
+# for T in S do 
+#  t:=CAlgRank5SFromList(T); 
+#  if Size(t)=1 then 
+#    Add(L,T); 
+#  fi; 
+#  od; 
+
+return L; 
+end; 
+
+#######################################
+RegularMatricesRank5S:=function(L)
+local B0,B1,B2,B3,B4, B;
+
+B0:=IdentityMat(5);
+
+B1:=[[0,L[25],0,0,0],
+    [1,L[25]-L[1]-L[5]-L[9]-1,L[1],L[5],L[9]],
+    [0,L[25]-L[2]-L[6]-L[10], L[2],L[6],L[10]],
+    [0,L[25]-L[3]-L[7]-L[11], L[3],L[7],L[11]],
+    [0,L[25]-L[4]-L[8]-L[12], L[4],L[8],L[12]]];
+
+B2:=[[0,0,L[26],0,0],
+     [0,L[1],L[26]-L[1]-L[13]-L[17],L[13],L[17]],
+     [1,L[2],L[26]-L[2]-L[14]-L[18]-1,L[14],L[18]],
+     [0,L[3],L[26]-L[3]-L[15]-L[19],L[15],L[19]],
+     [0,L[4],L[26]-L[4]-L[16]-L[20],L[16],L[20]]];
+
+B3:=[[0,0,0,L[27],0],
+     [0,L[5],L[13],L[27]-L[5]-L[13]-L[21],L[21]],
+     [0,L[6],L[14],L[27]-L[6]-L[14]-L[22],L[22]],
+     [1,L[7],L[15],L[27]-L[7]-L[15]-L[23]-1,L[23]],
+     [0,L[8],L[16],L[27]-L[8]-L[16]-L[24],L[24]]];
+
+B4:=[[0,0,0,0,L[28]],
+     [0,L[9],L[17],L[21],L[28]-L[9]-L[17]-L[21]],
+     [0,L[10],L[18],L[22],L[28]-L[10]-L[18]-L[22]],
+     [0,L[11],L[19],L[23],L[28]-L[11]-L[19]-L[23]],
+     [1,L[12],L[20],L[24],L[28]-L[12]-L[20]-L[24]-1]];
+
+B:=[B0,B1,B2,B3,B4];
+
+return B;
+end; 
+######################################
+IntegralTableAlgebrasFromListRank5S:=function(n)
+local L,l,i,V,t,j,k,S,T,B,b,G,b1,B1,g1,g2,g; 
+
+S:=[]; 
+T:=[];
+L:=EnumerationFromListRank5S(n);
+Print("Enumeration complete","\n");
+# L:=EnumerationVarietyRank5S(n,V1,x); 
+l:=Length(L);
+
+for i in [1..l] do 
+   B:=RegularMatricesRank5S(L[i]); 
+   t:=0;
+   for b in B do 
+     for j in [1..5] do 
+       for k in [1..5] do 
+         if b[j][k]<0 then 
+          t:=1; 
+         fi; 
+       od; 
+     od; 
+   od;
+   if t=0 then Add(S,B); fi; 
+od; 
+
+g1:=PermutationMat((1,2),5); 
+g2:=PermutationMat((1,2,3,4,5),5); 
+G:=Group([g1,g2]); 
+
+for B in S do 
+  t:=0;
+  for g in G do 
+    B1:=[];
+    for b1 in B do 
+      Add(B1,b1^g); 
+    od; 
+    for b in T do 
+     if IsEqualSet(B1,b) then   
+      t:=1; 
+     fi; 
+    od; 
+  od; 
+   if t=0 then    
+    Add(T,B); 
+   fi;
+od;
+
+return T; 
+end;  
+###################################
+    
+
+######################################
+IntegralTableAlgebrasVarietyRank5S:=function(n,V1,x)
+local L,l,i,V,t,j,k,S,T,B,b,G,b1,B1,g1,g2,g; 
+
+S:=[]; 
+T:=[];
+# L:=EnumerationFromListRank5S(n);
+L:=EnumerationCAlgVarietyRank5S(n,V1,x); 
+Print("Enumeration complete","\n"); 
+l:=Length(L);
+
+for i in [1..l] do 
+   B:=RegularMatricesRank5S(L[i]); 
+   t:=0;
+   for b in B do 
+     for j in [1..5] do 
+       for k in [1..5] do 
+         if b[j][k]<0 then 
+          t:=1; 
+         fi; 
+       od; 
+     od; 
+   od;
+   if t=0 then Add(S,B); fi; 
+od; 
+
+g1:=PermutationMat((1,2),5); 
+g2:=PermutationMat((1,2,3,4,5),5); 
+G:=Group([g1,g2]); 
+
+for B in S do 
+  t:=0;
+  for g in G do 
+    B1:=[];
+    for b1 in B do 
+      Add(B1,b1^g); 
+    od; 
+    for b in T do 
+     if IsEqualSet(B1,b) then   
+      t:=1; 
+     fi; 
+    od; 
+  od; 
+   if t=0 then    
+    Add(T,B); 
+   fi;
+od;
+
+return T; 
+end;  
+###################################
+    
+
+
+IntegralMultiplicitiesCheck5:=function(f,K) 
+local F,C1,T,m1,m2,m3,m4,m5,c,r,s,t,u,v,t1,f0,F1,k1,k2,k3,k4,d,d1,n,i,x;
+F:=Factors(f); 
+k1:=K[1]; k2:=K[2]; k3:=K[3]; k4:=K[4];  
+n:=1+k1+k2+k3+k4;
+T:=false; 
+x:=Indeterminate(Rationals,"x");
+
+if Length(F)=2 then 
+c:=CoefficientsOfUnivariatePolynomial(F[2])[5]; 
+if c=1 then T:=true; m1:=k1; 
+f0:=(x-k1)*F[2]^m1;
+C1:=CompanionMat(f0);
+for i in [1..4] do 
+  t1:=TraceMat(C1^i)/n; 
+  if not(IsInt(t1)) then T:=false; fi; 
+od;
+if T=true then 
+  d:=Discriminant(f); 
+  F1:=(n^5*k1*k2*k3*k4)/(m1^4);
+  d1:=d/F1;
+  if not(IsInt(d1)) then T:=false; fi; 
+  if IsInt(d1) then if not(IsSquareInt(d1)) then T:=false; fi; fi; 
+fi; 
+fi; 
+fi; 
+
+if Length(F)=3 and Degree(F[3])=3 then 
+r:=RootsOfUPol(F[2])[1]; 
+c:=CoefficientsOfUnivariatePolynomial(F[3])[3];
+for m1 in [1..n-2] do 
+m2:=(n-m1-1)/3; 
+if m2>0 and IsInt(m2) and k1+m1*r-m2*c=0 then 
+T:=true; 
+f0:=(x-k1)*F[2]^m1*F[3]^m2;
+C1:=CompanionMat(f0);
+for i in [1..4] do 
+  t1:=TraceMat(C1^i)/n; 
+  if not(IsInt(t1)) then T:=false; fi; 
+od; 
+if T=true then 
+  d:=Discriminant(f); 
+  F1:=(n^5*k1*k2*k3*k4)/(m1*m2^3);
+  d1:=d/F1; 
+  if not(IsInt(d1)) then T:=false; fi; 
+  if IsInt(d1) then if not(IsSquareInt(d1)) then T:=false; fi; fi; 
+fi; 
+fi; 
+if T=true then break; fi; 
+od; 
+fi; 
+
+if Length(F)=3 and Degree(F[3])=2 then 
+r:=CoefficientsOfUnivariatePolynomial(F[2])[2]; 
+c:=CoefficientsOfUnivariatePolynomial(F[3])[2]; 
+for m1 in [1..n-2] do 
+m2:=(n-2*m1-1)/2; 
+if m2>0 and IsInt(m2) and k1-m1*r-m2*c=0 then 
+T:=true;  
+f0:=(x-k1)*F[2]^m1*F[3]^m2;
+C1:=CompanionMat(f0);
+for i in [1..4] do 
+  t1:=TraceMat(C1^i)/n; 
+  if not(IsInt(t1)) then T:=false; fi;
+od; 
+if T=true then 
+  d:=Discriminant(f); 
+  F1:=(n^5*k1*k2*k3*k4)/(m1^2*m2^2);
+  d1:=d/F1; 
+  if not(IsInt(d1)) then T:=false; fi; 
+  if IsInt(d1) then if not(IsSquareInt(d1)) then T:=false; fi; fi; 
+fi; 
+fi;
+if T=true then break; fi;
+od; 
+fi;  
+
+if Length(F)=4 and Degree(F[4])=2 then 
+r:=RootsOfUPol(F[2])[1]; 
+s:=RootsOfUPol(F[3])[1]; 
+c:=CoefficientsOfUnivariatePolynomial(F[4])[1]; 
+for m1 in [1..n-3] do 
+for m2 in [1..n-2-m1] do 
+m3:=(n-m1-m2-1)/2; 
+if m3>0 and IsInt(m3) and k1+m1*r+m2*s-m3*c=0 then 
+T:=true; 
+f0:=(x-k1)*F[2]^m1*F[3]^m2*F[4]^m3;
+C1:=CompanionMat(f0);
+for i in [1..4] do 
+  t1:=TraceMat(C1^i)/n; 
+  if not(IsInt(t1)) then T:=false; fi; 
+od; 
+if T=true then 
+  d:=Discriminant(f); 
+  F1:=(n^5*k1*k2*k3*k4)/(m1*m2*m3^2);
+  d1:=d/F1; 
+  if not(IsInt(d1)) then T:=false; fi; 
+  if IsInt(d1) then if not(IsSquareInt(d1)) then T:=false; fi; fi; 
+fi; 
+fi;
+if T=true then break; fi;  
+od; 
+if T=true then break; fi;  
+od; 
+fi; 
+
+if Length(F)=5 then 
+r:=RootsOfUPol(F[2])[1]; 
+s:=RootsOfUPol(F[3])[1]; 
+t:=RootsOfUPol(F[4])[1]; 
+c:=CoefficientsOfUnivariatePolynomial(F[5])[1]; 
+for m1 in [1..n-4] do 
+for m2 in [1..n-m1-3] do 
+for m3 in [1..n-m1-m2-2] do 
+m4:=(n-1-m1-m2-m3); 
+if m4>0 and IsInt(m4) and k1+m1*r+m2*s+m3*t-m4*c=0 then 
+T:=true; 
+f0:=(x-k1)*F[2]^m1*F[3]^m2*F[4]^m3*F[5]^m4;
+C1:=CompanionMat(f0);
+for i in [1..4] do 
+  t1:=TraceMat(C1^i)/n; 
+  if not(IsInt(t1)) then T:=false; fi; 
+od; 
+if T=true then 
+  d:=Discriminant(f); 
+  F1:=(n^5*k1*k2*k3*k4)/(m1*m2*m3*m4);
+  d1:=d/F1; 
+  if not(IsInt(d1)) then T:=false; fi; 
+  if IsInt(d1) then if not(IsSquareInt(d1)) then T:=false; fi; fi; 
+fi; 
+fi; 
+if T=true then break; fi; 
+od;
+if T=true then break; fi; 
+od; 
+if T=true then break; fi; 
+od; 
+fi; 
+
+return T; 
+end; 
+
+###################################
+IsSITA:=function(b)
+local a,d,r,t,D,i,j;
+
+a:=Algebra(Rationals,b); 
+d:=Basis(a,b);
+r:=Length(b[1][1]); 
+t:=false; 
+if not(d=fail) then 
+t:=true;
+D:=[]; 
+for i in [1..r] do D[i]:=[]; for j in [1..r] do 
+D[i][j]:=Coefficients(d,d[i]*d[j]); od; 
+if not(TransposedMat(D[i])=d[i]) then t:=false; fi; 
+od; 
+fi; 
+
+return t; 
+end;  
+
+

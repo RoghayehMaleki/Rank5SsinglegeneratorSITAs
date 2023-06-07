@@ -1,0 +1,157 @@
+
+x:=Indeterminate(Rationals,"x"); 
+A:=[];
+A1:=[];
+G:=SymmetricGroup([2..5]); 
+N:=10; #for N in [35..100] do Print("\n N=",N,"\n"); 
+A2:=[];
+L := [];;
+for k1 in [2..N-4] do Print("\n \n","k=",k1,"\n"); 
+
+
+indexing_var :=0;
+M:= [];
+
+for k2 in [1..N-k1-3] do 
+for p112 in [1..k1] do if p112*k2/k1 in [1..k1-1] then p121:=p112*k2/k1; 
+
+for p113 in [0..k1] do #if p113>0 then m2:=k1^2-k1-p112*k2; else m2:=Maximum(k1*k2-p121*k1,k2^2-k2); fi;
+for k3 in [1..N-k1-k2-2] do if p113*k3/k1 in [0..k1-1-p121] then p131:=p113*k3/k1; 
+
+for p114 in [0..k1] do 
+#if p114>0 then m3:=k1^2-k1-p112*k2-p113*k3; else m3:=Maximum(k1*k2-p121*k1,k1*k3-p131*k1); m3:=Maximum(m3,k3^2-k3); fi;
+for k4 in [1..N-k1-k2-k3-1] do if 1+k1+k2+k3+k4<N+1 then 
+if p114*k4/k1 in [0..k1-1-p121-p131] then p141:=p114*k4/k1; 
+ 
+for p123 in [0..k1-p113] do 
+if p123*k3/k2 in [0..k1-p112] and p123*k3/k1 in [0..k2-p121] then p132:=p123*k3/k2; p231:=p123*k3/k1;
+for p124 in [0..k1-p114] do 
+  if p124*k4/k2 in [0..k1-p112-p132] and p124*k4/k1 in [0..k2-p121] then p142:=p124*k4/k2; p241:=p124*k4/k1;
+for p134 in [0..k1-p114-p124] do 
+  if p134*k4/k3 in [0..k1-p113-p123] and p134*k4/k1 in [0..k3-p131] and p112+p113+p114+p123+p124+p134>0 then p143:=p134*k4/k3; p341:=p134*k4/k1;
+
+p111:=k1-1-p121-p131-p141; if p111>-1 then 
+p122:=k1-p112-p132-p142; if p122>-1 then 
+p133:=k1-p113-p123-p143; if p133>-1 then 
+p144:=k1-p114-p124-p134; if p144>-1 then 
+
+C1:=[[0,k1,0,0,0],
+[1,k1-1-(p112*k2+p113*k3+p114*k4)/k1,p112*k2/k1,p113*k3/k1,p114*k4/k1],
+[0,p112,k1-p112-(p123*k3+p124*k4)/k2,p123*k3/k2,p124*k4/k2],
+[0,p113,p123,k1-p113-p123-p134*k4/k3,p134*k4/k3],
+[0,p114,p124,p134,k1-p114-p124-p134]]; 
+
+p:=MinimalPolynomial(C1); 
+if Degree(p)=5 then 
+
+t00:=0; 
+#for g in G do if C1^g in A2 then t00:=1; break; else Add(A2,C1); fi; od; 
+if t00=0 then 
+Print([k1,k2,k3,k4],[p112,p113,p114,p123,p124,p134],"\r");  
+
+if IntegralMultiplicitiesCheck5(p,[k1,k2,k3,k4]) then 
+
+#if Degree(Factors(p)[Length(Factors(p))])>1 then 
+#Print([k1,k2,k3,k4],[p112,p113,p114,p123,p124,p134],Factors(p),GaloisType(Factors(p)[Length(Factors(p))]),"\r"); 
+#else 
+Print([k1,k2,k3,k4],[p112,p113,p114,p123,p124,p134],"\r");  
+#fi; 
+
+#V1:=[]; for f in V0 do f:=Value(V0[i],[x[11],x[12],x[13],x[14]],[k1,k2,k3,k4]); 
+#if not(f=0*x[1]) then Add(V1,f); fi; od;
+#W:=ReducedGrobnerBasis(V1,MonomialLexOrdering()); 
+#Print(W,"\n"); 
+
+a1:=Algebra(Rationals,[IdentityMat(5),C1]); 
+
+for p223 in [0..k2-p123] do if p223*k3/k2 in [0..k2-1-p122] then p232:=p223*k3/k2; 
+for p224 in [0..k2-p124] do if p224*k4/k2 in [0..k2-1-p122-p232] then p242:=p224*k4/k2; 
+                            if k2-1-p122-p232-p242>-1 then p222:=k2-1-p122-p232-p242; 
+for p234 in [0..k2-p124-p224] do if p234*k4/k3 in [0..k2-p123-p223] then p243:=p234*k4/k3; p342:=p234*k4/k2;
+                                 if k2-p123-p223-p243>-1 then p233:=k2-p123-p223-p243; 
+                                 if k2-p124-p224-p234>-1 then p244:=k2-p124-p224-p234; 
+for p334 in [0..k3-p134-p234] do if p334*k4/k3 in [0..k3-1-p133-p233] then p343:=p334*k4/k3; 
+                                 if k3-1-p133-p233-p343>-1 then p333:=k3-1-p133-p233-p343;
+                                 if k3-p134-p234-p334>-1 then p344:=k3-p134-p234-p334;
+                                 if k4-1-p144-p244-p344>-1 then p444:=k4-1-p144-p244-p344; 
+                               
+C2:=[[0,0,k2,0,0],
+[0,k2-(p122*k2+p123*k3+p124*k4)/k1,p122*k2/k1,p123*k3/k1,p124*k4/k1],
+[1,p122,k2-1-p122-(p223*k3+p224*k4)/k2,p223*k3/k2,p224*k4/k2],
+[0,p123,p223,k2-p123-p223-p234*k4/k3,p234*k4/k3],
+[0,p124,p224,p234,k2-p124-p224-p234]];
+
+C3:=[[0,0,0,k3,0],
+[0,k3-(p132*k2+p133*k3+p134*k4)/k1,p132*k2/k1,p133*k3/k1,p134*k4/k1],
+[0,p132,k3-p132-(p233*k3+p234*k4)/k2,p233*k3/k2,p234*k4/k2],
+[1,p133,p233,k3-1-p133-p233-p334*k4/k3,p334*k4/k3],
+[0,p134,p234,p334,k3-p134-p234-p334]];
+
+C4:=[[0,0,0,0,k4],
+[0,k4-(p142*k2+p143*k3+p144*k4)/k1,p142*k2/k1,p143*k3/k1,p144*k4/k1],
+[0,p142,k4-p142-(p243*k3+p244*k4)/k2,p243*k3/k2,p244*k4/k2],
+[0,p143,p243,k4-p143-p243-p344*k4/k3,p344*k4/k3],
+[1,p144,p244,p344,k4-1-p144-p244-p344]]; 
+
+
+b:=[IdentityMat(5),C1,C2,C3,C4]; 
+
+if IsSITA(b) then 
+n:=1+k1+k2+k3+k4;
+Print(n,[k1,k2,k3,k4],[p112,p113,p114],[p123,p124],[p134],[p223,p224],[p234],[p334],"\n"); 
+if p113=0 and p114=0 and p124=0 then Print("DRG \n"); fi;
+
+t:=0; 
+for i in [1..5] do for j in [1..5] do for k in [1..5] do 
+  if not(IsInt(b[i][j][k])) or b[i][j][k]<0 then t:=1; fi; 
+od; od; od; 
+if t=0 then 
+a1:=Algebra(Rationals,[IdentityMat(5),C1]); 
+#b1:=Basis(a1,[IdentityMat(5),C1,C1^2,C1^3,C1^4]); 
+t1:=0; 
+for i in [3..5] do if not(b[i] in a1) then t1:=1; fi; od; 
+
+if t1=0 then 
+for g in G do g1:=PermutationMat(g,5); 
+b1:=[b[1],b[2^(g^-1)]^g1,b[3^(g^-1)]^g1,b[4^(g^-1)]^g1,b[5^(g^-1)]^g1]; 
+for b2 in A do if b2=b1 then t1:=1; break; fi; od; 
+if t1=1 then break; fi; od; 
+
+if t1=0 then 
+indexing_var := indexing_var +1;
+PrintTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var)," ")
+AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),"degree:",k1,"\n order:",n,"\n",[k1,k2,k3,k4],[p112,p113,p114],[p123,p124],[p134],[p223,p224],[p234],[p334],"\n\n"); 
+Print(Factors(p)); 
+AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),"minimal polynomial:",Factors(p));
+f:=Factors(p)[Length(Factors(p))]; if Degree(f)>1 then 
+Print(GaloisType(f),"               \n");AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),"\n Galois type:",GaloisType(f),"\n\n minimal polynomial of other basis elements:\n ");  else Print(" \n"); fi; 
+Print(Factors(MinimalPolynomial(b[3])),"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),MinimalPolynomial(b[3]),"\n");
+Print(Factors(MinimalPolynomial(b[4])),"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),MinimalPolynomial(b[4]),"\n");
+Print(Factors(MinimalPolynomial(b[5])),"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),MinimalPolynomial(b[5]),"\n");
+Print(b,"\n \n"); AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),"\n SITAs:\n",b,"\n\n");
+Add(A,b);
+AddSet(A1,Factors(p)); 
+else Print("                                                                  \r"); 
+fi;
+fi; fi; fi; 
+fi;
+
+fi; fi; fi;
+od; 
+fi; fi; fi; od;
+fi; fi; od; 
+fi; od; 
+
+fi; fi; fi;
+
+fi;
+fi; fi; fi; fi;  
+
+od; fi; od;
+fi; od; 
+fi; fi; od; 
+od; fi; od; 
+od; fi; od; 
+od; od; 
+
+#od;
