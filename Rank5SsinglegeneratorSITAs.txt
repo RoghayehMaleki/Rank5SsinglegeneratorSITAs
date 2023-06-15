@@ -169,7 +169,7 @@ Ordered := Set(orders_list);
 ######markdown table#############
 PrintTo("markdown-table.md", " ");
 AppendTo("markdown-table.md", "|Order|Degree|Degree sequence |Minimal polynomial| Details|Existence|\n");
-AppendTo("markdown-table.md", "|:---|:---|:--------: |:---------:| :---:| : ----:|\n");
+AppendTo("markdown-table.md", "|:---|:---|:--------: |:---------:| :---:| :----:|\n");
 for n in Ordered do
     for x in L do 
         if x[2] = n then
