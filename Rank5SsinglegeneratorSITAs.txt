@@ -3,14 +3,13 @@ x:=Indeterminate(Rationals,"x");
 A:=[];
 A1:=[];
 G:=SymmetricGroup([2..5]); 
-N:=10; #for N in [35..100] do Print("\n N=",N,"\n"); 
+N:=20; #for N in [35..100] do Print("\n N=",N,"\n"); 
 A2:=[];
 L := [];;
 for k1 in [2..N-4] do Print("\n \n","k=",k1,"\n"); 
 
 
 indexing_var :=0;
-M:= [];
 
 for k2 in [1..N-k1-3] do 
 for p112 in [1..k1] do if p112*k2/k1 in [1..k1-1] then p121:=p112*k2/k1; 
@@ -98,8 +97,9 @@ b:=[IdentityMat(5),C1,C2,C3,C4];
 
 if IsSITA(b) then 
 n:=1+k1+k2+k3+k4;
-Print(n,[k1,k2,k3,k4],[p112,p113,p114],[p123,p124],[p134],[p223,p224],[p234],[p334],"\n"); 
-if p113=0 and p114=0 and p124=0 then Print("DRG \n"); fi;
+Print(n,[k1,k2,k3,k4],[p112,p113,p114],[p123,p124],[p134],[p223,p224],[p234],[p334],"\n");
+is_drg := false; 
+if p113=0 and p114=0 and p124=0 then Print("DRG \n"); is_drg := true; fi;
 
 t:=0; 
 for i in [1..5] do for j in [1..5] do for k in [1..5] do 
@@ -119,16 +119,18 @@ if t1=1 then break; fi; od;
 
 if t1=0 then 
 indexing_var := indexing_var +1;
-PrintTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var)," ")
-AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),"degree:",k1,"\n order:",n,"\n",[k1,k2,k3,k4],[p112,p113,p114],[p123,p124],[p134],[p223,p224],[p234],[p334],"\n\n"); 
+PrintTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var)," ");
+AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),"degree:",k1,"\n order:",n,"\n",[k1,k2,k3,k4],[p112,p113,p114],[p123,p124],[p134],[p223,p224],[p234],[p334],"\n\n"); 
 Print(Factors(p)); 
-AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),"minimal polynomial:",Factors(p));
+AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),"minimal polynomial:",Factors(p));
 f:=Factors(p)[Length(Factors(p))]; if Degree(f)>1 then 
-Print(GaloisType(f),"               \n");AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),"\n Galois type:",GaloisType(f),"\n\n minimal polynomial of other basis elements:\n ");  else Print(" \n"); fi; 
-Print(Factors(MinimalPolynomial(b[3])),"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),MinimalPolynomial(b[3]),"\n");
-Print(Factors(MinimalPolynomial(b[4])),"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),MinimalPolynomial(b[4]),"\n");
-Print(Factors(MinimalPolynomial(b[5])),"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),MinimalPolynomial(b[5]),"\n");
-Print(b,"\n \n"); AppendTo(StringFormatted("data{1}-{2}-{3}",k1,n,indexing_var),"\n SITAs:\n",b,"\n\n");
+Print(GaloisType(f),"               \n");AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),"\n Galois type:",GaloisType(f),"\n\n minimal polynomial of other basis elements:\n ");  else Print(" \n"); fi; 
+Print(Factors(MinimalPolynomial(b[3])),"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),MinimalPolynomial(b[3]),"\n");
+Print(Factors(MinimalPolynomial(b[4])),"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),MinimalPolynomial(b[4]),"\n");
+Print(Factors(MinimalPolynomial(b[5])),"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),MinimalPolynomial(b[5]),"\n");
+Print(b,"\n \n"); AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),"\n SITA:\n",b,"\n\n");
+name := StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var);
+Add(L,[k1,n,[k1,k2,k3,k4],Factors(p),StringFormatted("{}",name)]);
 Add(A,b);
 AddSet(A1,Factors(p)); 
 else Print("                                                                  \r"); 
@@ -155,3 +157,23 @@ od; fi; od;
 od; od; 
 
 #od;
+
+#####ordering#########
+orders_list := [];
+for x in L do 
+    Add(orders_list,x[2]);
+    od;
+Ordered := Set(orders_list);
+    
+
+######markdown table#############
+PrintTo("markdown-table.md", " ");
+AppendTo("markdown-table.md", "|Order|Degree|Degree sequence |Minimal polynomial| Details|Existence|\n");
+AppendTo("markdown-table.md", "|:---|:---|:--------: |:---------:| :---:| : ----:|\n");
+for n in Ordered do
+    for x in L do 
+        if x[2] = n then
+	         AppendTo("markdown-table.md", StringFormatted("|{2}|{1}|{3}|{4}| [link]({5})|  |\n",x[1],x[2],x[3],x[4],x[5]));
+        fi;
+	    od;
+  od;
