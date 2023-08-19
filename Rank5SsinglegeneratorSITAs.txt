@@ -1,6 +1,6 @@
 #########################################
 IsSITA:=function(b)
-local a,d,r,t,D,i,j,t1,k;
+local a,d,r,t,D,i,j,k,t1;
 
 a:=Algebra(Rationals,b); 
 d:=Basis(a,b);
@@ -105,7 +105,7 @@ fi;
 if Length(F)=4 and Degree(F[4])=2 then 
 r:=RootsOfUPol(F[2])[1]; 
 s:=RootsOfUPol(F[3])[1]; 
-c:=CoefficientsOfUnivariatePolynomial(F[4])[1]; 
+c:=CoefficientsOfUnivariatePolynomial(F[4])[2]; 
 for m1 in [1..n-3] do 
 for m2 in [1..n-2-m1] do 
 m3:=(n-m1-m2-1)/2; 
@@ -171,30 +171,28 @@ end;
 ###################################################
 
 x:=Indeterminate(Rationals,"x"); 
-#A:=[];
+A:=[];
 A1:=[];
 G:=SymmetricGroup([3..5]); 
-#N:=100; 
-
-
+#N:=250; 
 L := [];;
-for N in [5..20] do Print("                                             \n \n N=",N,"\n"); 
+for N in [35..250] do Print("\n N=",N,"\n"); 
 A2:=[];
-for k1 in [2..N-4] do #Print("\n \n","k=",k1,"\n"); 
+for k1 in [3] do Print("\n \n","k=",k1,"\n"); 
+N:=k1^4+k1^3+k1^2+k1;
 
-
+m2:=Minimum(N-k1-3,k1^2-k1); 
 indexing_var :=0;
-
-m2:=Minimum(N-k1-3,k1^2-k1);
 for k2 in [1..m2] do 
 for p112 in [1..k1] do if p112*k2/k1 in [1..k1-1] then p121:=p112*k2/k1; 
 
-for p113 in [0..k1] do m3:=Maximum(k1^2-k1-p112*k2,k1*k2-p121*k1); m3:=Minimum(m3,N-k1-k2-2); 
-for k3 in [1..m3] do if p113*k3/k1 in [0..k1-1-p121] then p131:=p113*k3/k1; 
+m3:=Maximum(k1^2-k1-p112*k2,k1*k2-p121*k1); m3:=Minimum(m3,N-k1-k2-2); 
+for k3 in [1..m3] do 
+for p113 in [0..p112] do if p113*k3/k1 in [0..k1-1-p121] then p131:=p113*k3/k1; 
 
-for p114 in [0..k1] do m4:=Maximum(k1^2-k1-p112*k2-p113*k3,Maximum(k1*k2-p121*k1,k1*k3-p131*k1));
+for p114 in [0..p113] do m4:=Maximum(k1^2-k1-p112*k2-p113*k3,Maximum(k1*k2-p121*k1,k1*k3-p131*k1));
 #if p114>0 then m3:=k1^2-k1-p112*k2-p113*k3; else m3:=Maximum(k1*k2-p121*k1,k1*k3-p131*k1); m3:=Maximum(m3,k3^2-k3); fi;
-for k4 in [k3..m4] do if 1+k1+k2+k3+k4=N then 
+for k4 in [k3..m4] do n:=1+k1+k2+k3+k4; if n<N+1 and n>k1+1 then 
 if p114*k4/k1 in [0..k1-1-p121-p131] then p141:=p114*k4/k1; 
  
 for p123 in [0..k1-p113] do 
@@ -202,7 +200,9 @@ if p123*k3/k2 in [0..k1-p112] and p123*k3/k1 in [0..k2-p121] then p132:=p123*k3/
 for p124 in [0..k1-p114] do 
   if p124*k4/k2 in [0..k1-p112-p132] and p124*k4/k1 in [0..k2-p121] then p142:=p124*k4/k2; p241:=p124*k4/k1;
 for p134 in [0..k1-p114-p124] do 
-  if p134*k4/k3 in [0..k1-p113-p123] and p134*k4/k1 in [0..k3-p131] and p112+p113+p114+p123+p124+p134>0 then p143:=p134*k4/k3; p341:=p134*k4/k1;
+  if p134*k4/k3 in [0..k1-p113-p123] and p134*k4/k1 in [0..k3-p131] and p112+p113+p114+p123+p124+p134>0 then 
+
+p143:=p134*k4/k3; p341:=p134*k4/k1;
 
 p111:=k1-1-p121-p131-p141; if p111>-1 then 
 p122:=k1-p112-p132-p142; if p122>-1 then 
@@ -217,6 +217,7 @@ C:=[[0,k1,0,0,0],
 
 p:=MinimalPolynomial(C); 
 if Degree(p)=5 then 
+Print(n,[k1,k2,k3,k4],"\r");  
 
 B:=[(C^0)[1],(C^1)[1],(C^2)[1],(C^3)[1],(C^4)[1]];
 V:=VectorSpace(Rationals,B); 
@@ -234,33 +235,46 @@ b[i]:=A;
 od; 
 
 if IsSITA(b) then 
-Print([[k1,k2,k3,k4],[p112,p113,p114,p123,p124,p134]],"\r");  
+Print(n,[k1,k2,k3,k4],[p112,p113,p114,p123,p124,p134],"\r");  
+
 
 if IntegralMultiplicitiesCheck5(p,[k1,k2,k3,k4]) then 
+
 indexing_var := indexing_var +1;
 n:=1+k1+k2+k3+k4;
-Print([[k1,k2,k3,k4],[p112,p113,p114,p123,p124,p134]],"\n");
+Print(n,[k1,k2,k3,k4],[p112,p113,p114,p123,p124,p134],"\n");  
 PrintTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var)," ");
-AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),"degree:",k1,"\n order:",n,"\n",[k1,k2,k3,k4],[p112,p113,p114,p123,p124,p134],"\n\n");   
-Print(Factors(p)); f:=Factors(p)[Length(Factors(p))];
+AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),"degree:",k1,"\n order:",n,"\n",[k1,k2,k3,k4],[p112,p113,p114,p123,p124,p134],"\n\n"); 
+Print(Factors(p)); 
+f:=Factors(p)[Length(Factors(p))]; 
 AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),"minimal polynomial:",Factors(p));
- if Degree(f)>1 then 
-Print(GaloisType(f),"               \n"); AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),"\n Galois type:",GaloisType(f),"\n\n minimal polynomial of other basis elements:\n "); else Print(" \n"); fi; 
-Print(Factors(MinimalPolynomial(b[3])),"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),MinimalPolynomial(b[3]),"\n");
-Print(Factors(MinimalPolynomial(b[4])),"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),MinimalPolynomial(b[4]),"\n");
-Print(Factors(MinimalPolynomial(b[5])),"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),MinimalPolynomial(b[5]),"\n");
+
+if Degree(f)>1 then 
+Print(GaloisType(f),"               \n"); #else Print(" \n");
+AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),"\n Galois type:",GaloisType(f),"\n\n minimal polynomial of other basis elements:\n "); else Print(" \n");
+fi; 
+
+
+for i in [3..5] do 
+Print(Factors(MinimalPolynomial(b[i])),"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),MinimalPolynomial(b[i]),"\n");
+od; 
 Print(b,"\n"); AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),"\n SITA:\n",b,"\n\n");
+#Print(Factors(MinimalPolynomial(b[3])),"\n"); 
+#Print(Factors(MinimalPolynomial(b[4])),"\n"); 
+#Print(Factors(MinimalPolynomial(b[5])),"\n"); 
+#Print(b,"\n \n"); 
 #Add(A,b);
-AddSet(A1,[[k1,k2,k3,k4],[p112,p113,p114,p123,p124,p134]]); 
+#AddSet(A1,Factors(p)); 
+#else Print("                                                                  \r"); 
 
 name := StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var);
 Add(L,[k1,n,[k1,k2,k3,k4],Factors(p),StringFormatted("{}",name)]);
 
 if IsPpolynomialTA(b) then Print("P-polynomial "); AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),"\n P-polynomial\n","\n\n"); fi; 
 if IsQpolynomialTA(b) then Print("Q-polynomial "); AppendTo(StringFormatted("data{1}-{2}-{3}.txt",k1,n,indexing_var),"\n Q-polynomial\n","\n\n"); fi; 
-Print("\n \n"); 
+Print(" \n \n"); 
 
-else Print("                                                                  \r"); 
+
 fi;
 fi; fi; fi; 
 fi;
@@ -271,7 +285,7 @@ fi; od;
 fi; fi; od; od; 
 fi; od; od; 
 fi; od; od; od;
-od; 
+od;
 
 #####ordering#########
 orders_list := [];
@@ -292,5 +306,4 @@ for n in Ordered do
         fi;
       od;
   od;
-
 
