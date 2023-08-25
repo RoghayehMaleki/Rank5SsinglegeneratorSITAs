@@ -176,9 +176,10 @@ A1:=[];
 G:=SymmetricGroup([3..5]); 
 #N:=250; 
 L := [];;
-for N in [35..250] do Print("\n N=",N,"\n"); 
+N:=250;
+#for N in [209..210] do Print("\n N=",N,"\n"); 
 A2:=[];
-for k1 in [3] do Print("\n \n","k=",k1,"\n"); 
+for k1 in [3..9] do Print("\n \n","k=",k1,"\n"); 
 N:=k1^4+k1^3+k1^2+k1;
 
 m2:=Minimum(N-k1-3,k1^2-k1); 
